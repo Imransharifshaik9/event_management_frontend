@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
 import './AddEvent.css'; // Import CSS file
 
 const AddEvent = () => {
@@ -46,11 +45,10 @@ const AddEvent = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="container">
-        <div className="form-container">
-          <h1 className="mb-4">Add Event</h1>
+    <div className="container d-flex justify-content-center" >
+      <div className="card mt-5" style={{width: '90%', backgroundColor: 'lightblue'}}>
+        <div className="card-body">
+          <h1 className="mb-4" style={{ textAlign:"center"}}>Add Event</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Name:</label>

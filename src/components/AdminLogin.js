@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import AddEvent from './AddEvent'; // Import AddEvent component
+import ListAllEvents from './ListAllEvents';
 
 const AdminLogin = () => {
   const [name, setName] = useState('');
@@ -61,39 +62,56 @@ const AdminLogin = () => {
   return (
     <div>
       <Navbar />
-      {authenticated ? (
-        <div>
-          <h1>Welcome, {name}!</h1>
-          <button onClick={handleLogout}>Logout</button>
-          <AddEvent />
+      <div className="container mt-5" >
+        <div className="row justify-content-center" >
+          <div className="col-lg-6">
+            {authenticated ? (
+              <div className="card shadow-lg">
+                <div className="card-header bg-primary text-white">
+                  <h3 className="card-title mb-0">Welcome, {name}!</h3>
+                </div>
+                <div className="card-body" >
+                  <button className="btn btn-danger" onClick={handleLogout}>Logout</button>
+                  <ListAllEvents/>
+                  <AddEvent />
+                </div>
+              </div>
+            ) : (
+              <div className="card shadow-lg">
+                <div className="card-header bg-primary text-white">
+                  <h3 className="card-title mb-0">Admin Login</h3>
+                </div>
+                <div className="card-body">
+                  <form onSubmit={handleLogin}>
+                    <div className="form-group">
+                      <label htmlFor="name">Name:</label>
+                      <input
+                        type="text"
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="password">Password:</label>
+                      <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="form-control"
+                      />
+                    </div>
+                    {error && <div className="alert alert-danger">{error}</div>}
+                    <button type="submit" className="btn btn-primary">Login</button>
+                  </form>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      ) : (
-        <div>
-          <h1>Admin Login Page</h1>
-          <form onSubmit={handleLogin}>
-            <div>
-              <label htmlFor="name">Name:</label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            {error && <div>{error}</div>}
-            <button type="submit">Login</button>
-          </form>
-        </div>
-      )}
+      </div>
     </div>
   );
 };

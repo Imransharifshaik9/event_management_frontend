@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from './Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './events.css';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -25,7 +25,6 @@ const Events = () => {
 
   return (
     <div>
-      <Navbar />
       <h1 className="text-center mt-3 mb-4">Events Page</h1>
       <div className="container">
         <div className="row">
@@ -57,6 +56,7 @@ const EventCard = ({ event }) => {
               <p className="card-text">Food Price (Child): {event.foodPriceChild}</p>
             </div>
           )}
+          {/* Pass event ID to the registration page */}
           <Link to={`/registration/${event.id}`} className="btn btn-primary">Go to Register</Link>
         </div>
       </div>

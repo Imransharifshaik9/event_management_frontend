@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import Events from './Events';
 import Navbar from './Navbar';
-import MyEvents from './MyEvents'; // Import MyEvents component
+import bgImage from '../Images/userLogin.jpg';
 
 const UserLogin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const [authenticated, setAuthenticated] = useState(false); // State to track authentication
+  const [authenticated, setAuthenticated] = useState(false);
 
-  // Check if the user is already authenticated on component mount
   useEffect(() => {
+    // Check if user session exists in localStorage
     const userSession = localStorage.getItem('userSession');
     if (userSession) {
+      const { username } = JSON.parse(userSession);
+      setUsername(username);
       setAuthenticated(true);
-      setUsername(userSession);
     }
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once, on component mount
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,13 +26,12 @@ const UserLogin = () => {
       const response = await fetch('http://localhost:8080/users');
       const userData = await response.json();
 
-      // Find user data by username
-      const user = userData.find(user => user.username === username);
+      const user = userData.find((user) => user.username === username);
 
       if (user && user.password === password) {
-        console.log("Login successful");
-        setAuthenticated(true); // Set authenticated state to true upon successful login
-        localStorage.setItem('userSession', username); // Store the username in local storage
+        console.log('Login successful');
+        setAuthenticated(true);
+        localStorage.setItem('userSession', JSON.stringify({ userId: user.id, username }));
       } else {
         setError('Invalid username or password');
       }
@@ -42,24 +43,27 @@ const UserLogin = () => {
 
   const handleLogout = () => {
     setAuthenticated(false);
-    localStorage.removeItem('userSession'); // Remove user session data from local storage
+    localStorage.removeItem('userSession');
   };
 
   return (
-    <div>
+    <div style={{ textAlign: 'center', margin: '20px' }}>
       <Navbar />
-      {authenticated ? ( // Render MyEvents component if authenticated
+      {authenticated ? (
         <div>
           <h1>Welcome, {username}!</h1>
-          <button onClick={handleLogout}>Logout</button>
-          <MyEvents username={username} />
+          <button onClick={handleLogout} style={{ padding: '10px', margin: '10px', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Logout</button>
+          {/* Add other components here after login */}
+
+          <Events />
+          
         </div>
       ) : (
-        <div>
+        <div >
           <h1>User Login Page</h1>
-          <form onSubmit={handleLogin}>
-            <div>
-              <label htmlFor="username">Username:</label>
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <div style={{ margin: '10px' }}>
+              <label htmlFor="username" style={{ marginRight: '10px' }}>Username:</label>
               <input
                 type="text"
                 id="username"
@@ -67,8 +71,8 @@ const UserLogin = () => {
                 onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div>
-              <label htmlFor="password">Password:</label>
+            <div style={{ margin: '10px' }}>
+              <label htmlFor="password" style={{ marginRight: '10px' }}>Password:</label>
               <input
                 type="password"
                 id="password"
@@ -76,8 +80,8 @@ const UserLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            {error && <div>{error}</div>}
-            <button type="submit">Login</button>
+            {error && <div style={{ color: 'red', margin: '10px' }}>{error}</div>}
+            <button type="submit" style={{ padding: '10px', margin: '10px', backgroundColor: 'blue', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Login</button>
           </form>
         </div>
       )}
