@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Events from './Events';
 import Navbar from './Navbar';
-import bgImage from '../Images/userLogin.jpg';
+//import bgImage from '../Images/userLogin.jpg';
+import { Link } from 'react-router-dom';
 
 const UserLogin = () => {
   const [username, setUsername] = useState('');
@@ -54,7 +55,9 @@ const UserLogin = () => {
           <h1>Welcome, {username}!</h1>
           <button onClick={handleLogout} style={{ padding: '10px', margin: '10px', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Logout</button>
           {/* Add other components here after login */}
-
+          <Link to="/myregistrations">
+            <button style={{ padding: '10px', margin: '10px', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>My Registrations</button>
+          </Link>
           <Events />
           
         </div>
